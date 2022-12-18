@@ -9,14 +9,22 @@ import { PrismaService } from '../prisma.service';
 export class PrismaNotificationRepository implements NotificationRepository {
   constructor(private prismaService: PrismaService) {}
 
-  findById(notificationId: string): Promise<Notification | null> {
-    return this.prismaService.notification.findUnique({
+  async findById(notificationId: string): Promise<Notification | null> {
+    const notification = await this.prismaService.notification.findUnique({
       where: { id: notificationId },
     });
+
+    if (!notification) {
+      return null;
+    }
+
+    return PrismaNotificationMapper.toDomain(notification);
   }
 
   async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
-    return this.prismaService.notification.findMany({ where: { recipientId } });
+    return (
+      await this.prismaService.notification.findMany({ where: { recipientId } })
+    ).map(PrismaNotificationMapper.toDomain);
   }
 
   async countManyByRecipientId(recipientId: string): Promise<number> {
