@@ -1,21 +1,21 @@
 import { NotificationRepository } from '@application/repositories/notifications-repository';
 import { Injectable } from '@nestjs/common';
 
-type CountRecipientRequest = {
+type CountRecipientNotificationsRequest = {
   recipientId: string;
 };
 
-type CountRecipientResponse = {
+type CountRecipientNotificationsResponse = {
   count: number;
 };
 
 @Injectable()
-export class CountRecipientNotification {
+export class CountRecipientNotifications {
   constructor(private notificationRepository: NotificationRepository) {}
 
   async execute(
-    request: CountRecipientRequest,
-  ): Promise<CountRecipientResponse> {
+    request: CountRecipientNotificationsRequest,
+  ): Promise<CountRecipientNotificationsResponse> {
     const { recipientId } = request;
 
     const count = await this.notificationRepository.countManyByRecipientId(
