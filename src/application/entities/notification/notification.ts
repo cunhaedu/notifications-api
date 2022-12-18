@@ -29,6 +29,18 @@ export class Notification {
     return this._id;
   }
 
+  public cancel() {
+    this.props.canceledAt = new Date();
+  }
+
+  public read() {
+    this.props.readAt = new Date();
+  }
+
+  public unread() {
+    this.props.readAt = null;
+  }
+
   public set recipientId(recipientId: string) {
     this.props.recipientId = recipientId;
   }
@@ -67,9 +79,5 @@ export class Notification {
 
   public get canceledAt(): Date | null | undefined {
     return this.props.canceledAt;
-  }
-
-  public cancel() {
-    this.props.canceledAt = new Date();
   }
 }
